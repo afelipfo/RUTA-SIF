@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Consulta SIF | Alcaldía de Medellín</title>
-    
-    <meta name="description" content="Consulta de manera interactiva las obras y reportes de la Secretaría de Infraestructura Física de Medellín. Gestión 2025.">
+
+    <meta name="description"
+        content="Consulta de manera interactiva las obras y reportes de la Secretaría de Infraestructura Física de Medellín.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,43 +19,53 @@
     <script src='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css' rel='stylesheet' />
 </head>
+
 <body class="bg-gray-50 font-[Inter] h-screen flex flex-col">
 
-    <header style="background: linear-gradient(135deg, hsl(210, 60%, 25%), hsl(210, 90%, 55%));" class="text-white text-center py-6 px-4 shadow-lg z-20">
+    <header style="background: linear-gradient(135deg, hsl(210, 60%, 25%), hsl(210, 90%, 55%));"
+        class="text-white text-center py-6 px-4 shadow-lg z-20">
         <img src="logo_footer.png" alt="Logo Alcaldía de Medellín" class="max-w-[250px] mx-auto mb-4">
-        <h1 class="text-4xl font-extrabold tracking-tight">Portal de Consulta SIF</h1>
-        <p class="text-md font-light opacity-90 mt-1">Secretaría de Infraestructura Física | Gestión 2025</p>
+        <h1 class="text-4xl font-extrabold tracking-tight">Portal de consulta por comunas y corregimientos</h1>
+        <p class="text-md font-light opacity-90 mt-1">Secretaría de Infraestructura Física | Distrito de Ciencia,
+            Tecnología e Innovación - Medellín</p>
     </header>
 
     <div id="geovisor-container" class="flex-grow relative">
-        
+
         <div id="map" class="absolute top-0 left-0 w-full h-full"></div>
 
-        <aside id="info-sidebar" class="absolute top-0 left-0 h-full w-full max-w-md bg-white/95 backdrop-blur-sm shadow-2xl z-30 transform -translate-x-full transition-transform duration-500 ease-in-out">
-            <button id="close-sidebar-btn" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition-colors z-50">
+        <aside id="info-sidebar"
+            class="absolute top-0 left-0 h-full w-full max-w-md bg-white/95 backdrop-blur-sm shadow-2xl z-30 transform -translate-x-full transition-transform duration-500 ease-in-out">
+            <button id="close-sidebar-btn"
+                class="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition-colors z-50">
                 <i class="fas fa-times text-2xl"></i>
             </button>
             <div id="report-content" class="p-8 overflow-y-auto h-full">
-                </div>
+            </div>
         </aside>
 
         <div class="absolute top-4 left-1/2 -translate-x-1/2 w-11/12 max-w-lg z-20">
             <div class="relative">
                 <label for="comuna-search-input" class="sr-only">Buscador por Comunas</label>
-                <input type="text" id="comuna-search-input" placeholder="Buscar comuna por nombre o número..." class="w-full p-4 pr-12 border-none rounded-full shadow-lg text-lg bg-white focus:ring-4 focus:ring-orange-400 focus:outline-none transition">
+                <input type="text" id="comuna-search-input" placeholder="Buscar comuna por nombre o número..."
+                    class="w-full p-4 pr-12 border-none rounded-full shadow-lg text-lg bg-white focus:ring-4 focus:ring-orange-400 focus:outline-none transition">
                 <i class="fas fa-search absolute right-5 top-1/2 -translate-y-1/2 text-gray-400"></i>
             </div>
-            <div id="search-results" class="absolute z-10 w-full bg-white border border-gray-200 rounded-md mt-2 shadow-lg hidden max-h-60 overflow-y-auto"></div>
+            <div id="search-results"
+                class="absolute z-10 w-full bg-white border border-gray-200 rounded-md mt-2 shadow-lg hidden max-h-60 overflow-y-auto">
+            </div>
         </div>
-        
-        <button id="locate-btn" class="mapboxgl-ctrl-icon mapboxgl-ctrl-geolocate" type="button" title="Ubicar mi comuna" aria-label="Ubicar mi comuna">
+
+        <button id="locate-btn" class="mapboxgl-ctrl-icon mapboxgl-ctrl-geolocate" type="button"
+            title="Ubicar mi comuna" aria-label="Ubicar mi comuna">
             <i class="fa-solid fa-location-crosshairs text-lg"></i>
         </button>
     </div>
-    
+
     <script src="html2canvas.min.js"></script>
     <script src="jspdf.umd.min.js"></script>
-    
+
     <script src="app.js"></script>
 </body>
+
 </html>
