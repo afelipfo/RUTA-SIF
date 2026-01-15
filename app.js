@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const infoSidebar = document.getElementById('info-sidebar');
     const closeSidebarBtn = document.getElementById('close-sidebar-btn');
     const locateBtn = document.getElementById('locate-btn');
-    const resetViewBtn = document.getElementById('reset-view-btn'); // NUEVO: Botón de reset
+    const resetViewBtn = document.getElementById('reset-view-btn');
 
     let comunasData = null;
     let hoveredComunaId = null;
@@ -17,10 +17,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- INICIALIZACIÓN DEL MAPA ---
     const map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/light-v11', // Estilo premium claro
+        style: 'mapbox://styles/mapbox/satellite-streets-v12', // Estilo realista
         center: [-75.5636, 6.2518],
         zoom: 11.5,
-        pitch: 45, // Menos inclinación para mejor lectura
+        pitch: 60,
         bearing: -17.6,
         antialias: true
     });
@@ -37,11 +37,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             initializeMapLayers();
             setupInteractions();
-            loadCorregimientosMenu(); // Cargar menú después de obtener datos
+            loadCorregimientosMenu();
 
         } catch (error) {
             console.error("Error cargando los datos de las comunas:", error);
-            console.error("No se pudo cargar el archivo comunas.geojson. Asegúrate de que el archivo exista en la misma carpeta.");
+            console.error("No se pudo cargar el archivo comunas.geojson.");
         }
     });
 
@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const item = document.createElement('div');
             item.className = 'p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-orange-100 transition-colors duration-200 flex items-center gap-3 border border-gray-200';
 
-            // Limpiar nombre si es muy largo para el menú
             const displayName = corr.NOMBRE.replace('Corregimiento ', '').replace(/^[0-9]+ - /, '');
 
             item.innerHTML = `
@@ -81,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
             corregimientosList.appendChild(item);
         });
     }
+
     function initializeMapLayers() {
         if (!comunasData) return;
 
@@ -101,13 +101,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     'case',
                     ['boolean', ['feature-state', 'hover'], false],
                     '#FF9800', // Naranja al hover
-                    '#42A5F5'  // Azul base
+                    '#42A5F5'  // Azul base contrastante
                 ],
                 'fill-opacity': [
                     'case',
                     ['boolean', ['feature-state', 'hover'], false],
                     0.7,
-                    0.4
+                    0.3 // Transparencia para ver satélite
                 ]
             }
         });
@@ -137,14 +137,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 'text-transform': 'uppercase'
             },
             'paint': {
-                'text-color': '#1a3c5e',
-                'text-halo-color': '#ffffff',
+                'text-color': '#FFFFFF',
+                'text-halo-color': '#000000',
                 'text-halo-width': 2
             }
         });
 
         // 2. CAPA CORREGIMIENTOS (MARCADORES/CÍRCULOS) - IDs >= 50
-        // Usamos círculos para evitar la geometría poligonal pequeña
         map.addLayer({
             'id': 'corregimientos-markers',
             'type': 'circle',
@@ -154,10 +153,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 'circle-radius': [
                     'case',
                     ['boolean', ['feature-state', 'hover'], false],
-                    12, // Más grande al hover
-                    8   // Tamaño normal
+                    14,
+                    10
                 ],
-                'circle-color': '#FF5722', // Color distintivo para zona rural
+                'circle-color': '#FF5722',
                 'circle-stroke-width': 2,
                 'circle-stroke-color': '#FFFFFF'
             }
@@ -172,21 +171,18 @@ document.addEventListener('DOMContentLoaded', function () {
             'layout': {
                 'text-field': ['get', 'NOMBRE'],
                 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-                'text-size': 11,
-                'text-offset': [0, 1.5], // Etiqueta debajo del punto
+                'text-size': 12,
+                'text-offset': [0, 1.5],
                 'text-anchor': 'top'
             },
             'paint': {
-                'text-color': '#D84315',
-                'text-halo-color': '#ffffff',
+                'text-color': '#FFCCBC',
+                'text-halo-color': '#000000',
                 'text-halo-width': 2
             }
         });
     }
 
-    // --- INTERACCIONES DEL MAPA Y UI ---
-
-    // --- INTERACCIONES DEL MAPA Y UI ---
     // --- INTERACCIONES DEL MAPA Y UI ---
     function setupInteractions() {
         const popup = new mapboxgl.Popup({
@@ -205,7 +201,6 @@ document.addEventListener('DOMContentLoaded', function () {
         map.on('mouseleave', 'corregimientos-markers', handleMouseLeave);
         map.on('click', 'corregimientos-markers', handleClick);
 
-        // Funciones auxiliares para eventos (DRY)
         function handleMouseMove(e) {
             map.getCanvas().style.cursor = 'pointer';
             if (e.features.length > 0) {
@@ -214,10 +209,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 hoveredComunaId = e.features[0].id;
                 map.setFeatureState({ source: 'comunas-source', id: hoveredComunaId }, { hover: true });
-
-                // Mostrar Popup solo si es necesario (opcional, ya hay etiquetas)
-                // const properties = e.features[0].properties;
-                // popup.setLngLat(e.lngLat).setHTML(`<div class="comuna-popup-title">${properties.NOMBRE}</div>`).addTo(map);
             }
         }
 
@@ -232,12 +223,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function handleClick(e) {
             if (e.features.length > 0) {
-                const feature = e.features[0];
-                showComunaInfo(feature.properties);
+                showComunaInfo(e.features[0].properties);
             }
         }
 
-        // Resto de controles...
         searchInput.addEventListener('input', handleSearch);
         searchInput.addEventListener('focus', handleSearch);
         document.addEventListener('click', (e) => {
@@ -252,13 +241,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         locateBtn.addEventListener('click', handleLocate);
 
-        // Botón Reset View
         if (resetViewBtn) {
             resetViewBtn.addEventListener('click', () => {
                 map.flyTo({
                     center: [-75.5636, 6.2518],
                     zoom: 11.5,
-                    pitch: 45,
+                    pitch: 60,
                     bearing: -17.6,
                     essential: true
                 });
@@ -282,8 +270,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (filtered.length > 0) {
             filtered.forEach(feature => {
                 const item = document.createElement('div');
-                // CORRECCIÓN: Usar la clase .result-item para aplicar estilos de styles.css
-                item.className = 'result-item';
+                item.className = 'result-item'; // Estilo definido en CSS
                 item.textContent = feature.properties.NOMBRE;
                 item.addEventListener('click', () => {
                     showComunaInfo(feature.properties);
@@ -298,7 +285,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // --- NUEVA LÓGICA DE GEOLOCALIZACIÓN ---
     function handleLocate() {
         if (!navigator.geolocation) {
             alert('La geolocalización no es soportada por tu navegador.');
@@ -310,7 +296,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const { longitude, latitude } = position.coords;
                 const userPoint = [longitude, latitude];
 
-                // Añadir o mover el marcador del usuario
                 if (userMarker) {
                     userMarker.setLngLat(userPoint);
                 } else {
@@ -319,26 +304,28 @@ document.addEventListener('DOMContentLoaded', function () {
                         .addTo(map);
                 }
 
-                // Encontrar la comuna que contiene la ubicación del usuario
-                const foundComuna = comunasData.features.find(feature =>
-                    pointInPolygon(userPoint, feature.geometry.coordinates[0])
-                );
+                // Lógica simplificada: encontrar comuna (aprox para puntos)
+                // Nota: pointInPolygon solo funciona para polígonos. 
+                // Para corregimientos (puntos) esto no funcionará igual, pero es aceptable por ahora.
+                const foundComuna = comunasData.features.find(feature => {
+                    if (feature.geometry.type === 'Polygon') {
+                        return pointInPolygon(userPoint, feature.geometry.coordinates[0]);
+                    }
+                    return false;
+                });
 
                 if (foundComuna) {
                     showComunaInfo(foundComuna.properties);
                 } else {
-                    alert('Tu ubicación actual está fuera de los límites de las comunas de Medellín.');
                     map.flyTo({ center: userPoint, zoom: 14 });
                 }
             },
             (error) => {
-                alert('No se pudo obtener tu ubicación. Asegúrate de haber concedido los permisos.');
-                console.error("Error de Geolocalización:", error);
+                alert('No se pudo obtener tu ubicación.');
             }
         );
     }
 
-    // Función para detectar si un punto está dentro de un polígono (algoritmo ray-casting)
     function pointInPolygon(point, polygon) {
         let x = point[0], y = point[1];
         let inside = false;
@@ -353,21 +340,29 @@ document.addEventListener('DOMContentLoaded', function () {
         return inside;
     }
 
-    // --- FIN DE LA NUEVA LÓGICA ---
-
     function showComunaInfo(properties) {
         const feature = comunasData.features.find(f => f.properties.IDENTIFICADOR === properties.IDENTIFICADOR);
         if (feature) {
-            const coordinates = feature.geometry.coordinates[0];
-            const bounds = coordinates.reduce((bounds, coord) => {
-                return bounds.extend(coord);
-            }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+            // FIX: Manejo diferencial de Puntos (Corregimientos) vs Polígonos (Comunas)
+            if (feature.geometry.type === 'Point') {
+                map.flyTo({
+                    center: feature.geometry.coordinates,
+                    zoom: 13,
+                    duration: 2000,
+                    essential: true
+                });
+            } else {
+                const coordinates = feature.geometry.coordinates[0];
+                const bounds = coordinates.reduce((bounds, coord) => {
+                    return bounds.extend(coord);
+                }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
 
-            map.fitBounds(bounds, {
-                padding: { top: 100, bottom: 100, left: infoSidebar.offsetWidth + 50, right: 50 },
-                pitch: 65,
-                duration: 2000
-            });
+                map.fitBounds(bounds, {
+                    padding: { top: 100, bottom: 100, left: infoSidebar.offsetWidth + 50, right: 50 },
+                    pitch: 60,
+                    duration: 2000
+                });
+            }
         }
 
         reportContent.innerHTML = `
@@ -375,7 +370,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <h2 class="text-3xl font-extrabold text-gray-800 border-b-4 border-orange-500 pb-3 mb-6">${properties.NOMBRE}</h2>
                 <div class="space-y-4 text-lg">
                     <p><strong class="text-gray-700">Identificador:</strong> ${properties.IDENTIFICADOR}</p>
-                    <p class="text-gray-600 leading-relaxed">Haz clic en el botón de abajo para generar el reporte detallado de esta comuna.</p>
+                    <p class="text-gray-600 leading-relaxed">Haz clic en el botón de abajo para generar el reporte detallado.</p>
                 </div>
                 <button id="generate-pdf-btn" class="w-full mt-8 bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-all duration-300 flex items-center justify-center gap-3 text-lg">
                     <i class="fas fa-file-pdf"></i> Generar Reporte PDF
@@ -395,17 +390,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const fileName = `data/comuna${comunaProperties.IDENTIFICADOR}.html`;
         const pdfFileName = `Reporte-${comunaProperties.NOMBRE.replace(/ /g, '_')}.pdf`;
 
-        pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparando reporte...';
+        pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparando...';
         pdfButton.disabled = true;
-
-        let tempContainer;
 
         try {
             const response = await fetch(fileName);
             if (!response.ok) throw new Error(`HTML not found: ${fileName}`);
             const htmlContent = await response.text();
 
-            tempContainer = document.createElement('div');
+            let tempContainer = document.createElement('div');
             tempContainer.style.position = 'absolute';
             tempContainer.style.left = '-9999px';
             tempContainer.style.top = '0';
@@ -414,7 +407,6 @@ document.addEventListener('DOMContentLoaded', function () {
             document.body.appendChild(tempContainer);
 
             pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
-
             await new Promise(resolve => setTimeout(resolve, 500));
 
             const canvas = await html2canvas(tempContainer, {
@@ -424,20 +416,14 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             document.body.removeChild(tempContainer);
-            tempContainer = null;
 
             const imgData = canvas.toDataURL('image/png');
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
-
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = pdf.internal.pageSize.getHeight();
+            const imgHeightOnPDF = pdfWidth / (canvas.width / canvas.height);
 
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            const ratio = canvasWidth / canvasHeight;
-
-            const imgHeightOnPDF = pdfWidth / ratio;
             let heightLeft = imgHeightOnPDF;
             let position = 0;
 
@@ -454,13 +440,9 @@ document.addEventListener('DOMContentLoaded', function () {
             pdf.save(pdfFileName);
 
         } catch (error) {
-            console.error('Error generando el PDF:', error);
-            alert(`No se pudo generar el reporte. Asegúrate de que el archivo "${fileName}" exista.`);
+            console.error('Error:', error);
+            alert('Error generando el reporte.');
         } finally {
-            if (tempContainer && document.body.contains(tempContainer)) {
-                document.body.removeChild(tempContainer);
-            }
-
             pdfButton.innerHTML = '<i class="fas fa-file-pdf"></i> Generar Reporte PDF';
             pdfButton.disabled = false;
         }
