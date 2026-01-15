@@ -7,19 +7,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchResultsContainer = document.getElementById('search-results');
     const infoSidebar = document.getElementById('info-sidebar');
     const closeSidebarBtn = document.getElementById('close-sidebar-btn');
-    const locateBtn = document.getElementById('locate-btn'); // NUEVO: Referencia al botón
+    const locateBtn = document.getElementById('locate-btn');
+    const resetViewBtn = document.getElementById('reset-view-btn'); // NUEVO: Botón de reset
 
     let comunasData = null;
     let hoveredComunaId = null;
-    let userMarker = null; // NUEVO: Variable para el marcador del usuario
+    let userMarker = null;
 
     // --- INICIALIZACIÓN DEL MAPA ---
     const map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/satellite-streets-v12',
+        style: 'mapbox://styles/mapbox/light-v11', // Estilo premium claro
         center: [-75.5636, 6.2518],
         zoom: 11.5,
-        pitch: 60,
+        pitch: 45, // Menos inclinación para mejor lectura
         bearing: -17.6,
         antialias: true
     });
@@ -89,37 +90,103 @@ document.addEventListener('DOMContentLoaded', function () {
             'generateId': true
         });
 
+        // 1. CAPA COMUNAS (POLÍGONOS) - IDs < 50
         map.addLayer({
-            'id': 'comunas-3d-fill',
-            'type': 'fill-extrusion',
+            'id': 'comunas-fill',
+            'type': 'fill',
             'source': 'comunas-source',
+            'filter': ['<', ['to-number', ['get', 'IDENTIFICADOR']], 50],
             'paint': {
-                'fill-extrusion-color': '#64B5F6',
-                'fill-extrusion-height': 200,
-                'fill-extrusion-base': 0,
-                'fill-extrusion-opacity': [
+                'fill-color': [
                     'case',
                     ['boolean', ['feature-state', 'hover'], false],
-                    0.8,
-                    0.5
+                    '#FF9800', // Naranja al hover
+                    '#42A5F5'  // Azul base
+                ],
+                'fill-opacity': [
+                    'case',
+                    ['boolean', ['feature-state', 'hover'], false],
+                    0.7,
+                    0.4
                 ]
             }
         });
 
+        // Bordes de Comunas
         map.addLayer({
             'id': 'comunas-borders',
             'type': 'line',
             'source': 'comunas-source',
-            'layout': {},
+            'filter': ['<', ['to-number', ['get', 'IDENTIFICADOR']], 50],
             'paint': {
                 'line-color': '#FFFFFF',
                 'line-width': 2
+            }
+        });
+
+        // Etiquetas de Comunas
+        map.addLayer({
+            'id': 'comunas-labels',
+            'type': 'symbol',
+            'source': 'comunas-source',
+            'filter': ['<', ['to-number', ['get', 'IDENTIFICADOR']], 50],
+            'layout': {
+                'text-field': ['get', 'NOMBRE'],
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 12,
+                'text-transform': 'uppercase'
+            },
+            'paint': {
+                'text-color': '#1a3c5e',
+                'text-halo-color': '#ffffff',
+                'text-halo-width': 2
+            }
+        });
+
+        // 2. CAPA CORREGIMIENTOS (MARCADORES/CÍRCULOS) - IDs >= 50
+        // Usamos círculos para evitar la geometría poligonal pequeña
+        map.addLayer({
+            'id': 'corregimientos-markers',
+            'type': 'circle',
+            'source': 'comunas-source',
+            'filter': ['>=', ['to-number', ['get', 'IDENTIFICADOR']], 50],
+            'paint': {
+                'circle-radius': [
+                    'case',
+                    ['boolean', ['feature-state', 'hover'], false],
+                    12, // Más grande al hover
+                    8   // Tamaño normal
+                ],
+                'circle-color': '#FF5722', // Color distintivo para zona rural
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#FFFFFF'
+            }
+        });
+
+        // Etiquetas para Corregimientos
+        map.addLayer({
+            'id': 'corregimientos-labels',
+            'type': 'symbol',
+            'source': 'comunas-source',
+            'filter': ['>=', ['to-number', ['get', 'IDENTIFICADOR']], 50],
+            'layout': {
+                'text-field': ['get', 'NOMBRE'],
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 11,
+                'text-offset': [0, 1.5], // Etiqueta debajo del punto
+                'text-anchor': 'top'
+            },
+            'paint': {
+                'text-color': '#D84315',
+                'text-halo-color': '#ffffff',
+                'text-halo-width': 2
             }
         });
     }
 
     // --- INTERACCIONES DEL MAPA Y UI ---
 
+    // --- INTERACCIONES DEL MAPA Y UI ---
     // --- INTERACCIONES DEL MAPA Y UI ---
     function setupInteractions() {
         const popup = new mapboxgl.Popup({
@@ -128,7 +195,18 @@ document.addEventListener('DOMContentLoaded', function () {
             className: 'comuna-popup'
         });
 
-        map.on('mousemove', 'comunas-3d-fill', (e) => {
+        // --- INTERACCIONES PARA COMUNAS (CAPA DE RELLENO) ---
+        map.on('mousemove', 'comunas-fill', handleMouseMove);
+        map.on('mouseleave', 'comunas-fill', handleMouseLeave);
+        map.on('click', 'comunas-fill', handleClick);
+
+        // --- INTERACCIONES PARA CORREGIMIENTOS (CAPA DE CÍRCULOS) ---
+        map.on('mousemove', 'corregimientos-markers', handleMouseMove);
+        map.on('mouseleave', 'corregimientos-markers', handleMouseLeave);
+        map.on('click', 'corregimientos-markers', handleClick);
+
+        // Funciones auxiliares para eventos (DRY)
+        function handleMouseMove(e) {
             map.getCanvas().style.cursor = 'pointer';
             if (e.features.length > 0) {
                 if (hoveredComunaId !== null) {
@@ -137,26 +215,29 @@ document.addEventListener('DOMContentLoaded', function () {
                 hoveredComunaId = e.features[0].id;
                 map.setFeatureState({ source: 'comunas-source', id: hoveredComunaId }, { hover: true });
 
-                const properties = e.features[0].properties;
-                popup.setLngLat(e.lngLat).setHTML(`<div class="comuna-popup-title">${properties.NOMBRE}</div>`).addTo(map);
+                // Mostrar Popup solo si es necesario (opcional, ya hay etiquetas)
+                // const properties = e.features[0].properties;
+                // popup.setLngLat(e.lngLat).setHTML(`<div class="comuna-popup-title">${properties.NOMBRE}</div>`).addTo(map);
             }
-        });
+        }
 
-        map.on('mouseleave', 'comunas-3d-fill', () => {
+        function handleMouseLeave() {
             map.getCanvas().style.cursor = '';
             if (hoveredComunaId !== null) {
                 map.setFeatureState({ source: 'comunas-source', id: hoveredComunaId }, { hover: false });
             }
             hoveredComunaId = null;
             popup.remove();
-        });
+        }
 
-        map.on('click', 'comunas-3d-fill', (e) => {
+        function handleClick(e) {
             if (e.features.length > 0) {
-                showComunaInfo(e.features[0].properties);
+                const feature = e.features[0];
+                showComunaInfo(feature.properties);
             }
-        });
+        }
 
+        // Resto de controles...
         searchInput.addEventListener('input', handleSearch);
         searchInput.addEventListener('focus', handleSearch);
         document.addEventListener('click', (e) => {
@@ -169,8 +250,21 @@ document.addEventListener('DOMContentLoaded', function () {
             infoSidebar.classList.add('-translate-x-full');
         });
 
-        // NUEVO: Event listener para el botón de geolocalización
         locateBtn.addEventListener('click', handleLocate);
+
+        // Botón Reset View
+        if (resetViewBtn) {
+            resetViewBtn.addEventListener('click', () => {
+                map.flyTo({
+                    center: [-75.5636, 6.2518],
+                    zoom: 11.5,
+                    pitch: 45,
+                    bearing: -17.6,
+                    essential: true
+                });
+                infoSidebar.classList.add('-translate-x-full');
+            });
+        }
     }
 
     function handleSearch(e) {
