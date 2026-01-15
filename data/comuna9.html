@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,6 +21,7 @@
             --color-texto: #333333;
             --sombra-card: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
+
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--color-gris-claro);
@@ -27,6 +29,7 @@
             margin: 0;
             padding: 0;
         }
+
         .actions-bar {
             position: sticky;
             top: 0;
@@ -37,11 +40,13 @@
             align-items: center;
             padding: 12px 5%;
             background-color: var(--color-blanco);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             z-index: 1000;
             box-sizing: border-box;
         }
-        .actions-bar a, .actions-bar button {
+
+        .actions-bar a,
+        .actions-bar button {
             text-decoration: none;
             font-weight: 600;
             font-size: 1em;
@@ -51,14 +56,17 @@
             cursor: pointer;
             border: 2px solid transparent;
         }
+
         .actions-bar .back-button {
             color: var(--color-azul-medio);
             border-color: var(--color-azul-medio);
         }
+
         .actions-bar .back-button:hover {
             background-color: var(--color-azul-medio);
             color: var(--color-blanco);
         }
+
         .actions-bar .download-button {
             color: var(--color-blanco);
             background-color: var(--color-naranja);
@@ -67,15 +75,18 @@
             align-items: center;
             gap: 8px;
         }
+
         .actions-bar .download-button:hover {
             background-color: #e66300;
             border-color: #e66300;
         }
+
         .container {
             max-width: 1400px;
             margin: auto;
             padding: 20px;
         }
+
         .header {
             background: linear-gradient(135deg, var(--color-azul-oscuro), var(--color-azul-medio));
             color: var(--color-blanco);
@@ -85,16 +96,19 @@
             margin-bottom: 30px;
             box-shadow: var(--sombra-card);
         }
+
         .header h1 {
             margin: 0;
             font-size: 2.5em;
             font-weight: 700;
         }
+
         .header p {
             margin: 5px 0 0;
             font-size: 1.2em;
             opacity: 0.9;
         }
+
         .section-title {
             font-size: 1.8em;
             font-weight: 600;
@@ -106,21 +120,27 @@
             display: flex;
             align-items: center;
         }
+
         .section-title i {
             margin-right: 15px;
             font-size: 1.2em;
         }
-        .grid-container, .intervention-section {
+
+        .grid-container,
+        .intervention-section {
             display: grid;
             gap: 25px;
         }
+
         .grid-container {
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         }
+
         .intervention-section {
-             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-             align-items: stretch;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            align-items: stretch;
         }
+
         .stat-card {
             background-color: var(--color-blanco);
             padding: 25px;
@@ -132,25 +152,30 @@
             flex-direction: column;
             justify-content: center;
         }
+
         .stat-card:hover {
             transform: translateY(-5px);
         }
+
         .stat-card .icon {
             font-size: 3em;
             color: var(--color-naranja);
             margin-bottom: 15px;
         }
+
         .stat-card .value {
             font-size: 2em;
             font-weight: 700;
             color: var(--color-azul-medio);
         }
+
         .stat-card .label {
             font-size: 0.9em;
             color: var(--color-texto);
             margin-top: 5px;
             line-height: 1.3;
         }
+
         .chart-container {
             background: var(--color-blanco);
             padding: 20px;
@@ -158,10 +183,12 @@
             box-shadow: var(--sombra-card);
             margin-top: 30px;
         }
+
         .summary-table-container {
             width: 100%;
             overflow-x: auto;
-         }
+        }
+
         .summary-table {
             width: 100%;
             border-collapse: collapse;
@@ -171,52 +198,72 @@
             border-radius: 10px;
             overflow: hidden;
         }
-        .summary-table th, .summary-table td {
+
+        .summary-table th,
+        .summary-table td {
             padding: 15px;
             text-align: left;
         }
+
         .summary-table thead {
             background-color: var(--color-azul-medio);
             color: var(--color-blanco);
             font-weight: 600;
         }
+
         .summary-table tbody tr:nth-child(even) {
             background-color: var(--color-gris-claro);
         }
+
         .summary-table tbody tr:hover {
             background-color: #e0e0e0;
         }
+
         .detail-list {
             background-color: var(--color-blanco);
             padding: 25px;
             border-radius: 10px;
             box-shadow: var(--sombra-card);
         }
+
         .detail-list h3 {
-             margin-top: 0;
-             color: var(--color-azul-oscuro);
-             border-bottom: 2px solid var(--color-gris-claro);
-             padding-bottom: 10px;
+            margin-top: 0;
+            color: var(--color-azul-oscuro);
+            border-bottom: 2px solid var(--color-gris-claro);
+            padding-bottom: 10px;
         }
+
         .detail-list ul {
             list-style: none;
             padding: 0;
             margin: 0;
         }
+
         .detail-list li {
             padding: 8px 0;
             display: flex;
             justify-content: space-between;
             border-bottom: 1px solid var(--color-gris-claro);
         }
+
         .detail-list li:last-child {
             border-bottom: none;
         }
+
         .detail-list li strong {
             color: var(--color-texto);
         }
+
+        .subsection-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: var(--color-azul-medio);
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
+
 <body>
 
     <div class="actions-bar">
@@ -228,160 +275,714 @@
 
     <div class="container" id="report-content">
         <header class="header">
-            <h1>Reporte de Analítica de Datos Comuna 9 - Buenos Aires</h1>
-            <p>Fecha de corte al 06 de agosto de 2025</p>
+            <h1>Comuna 9 - Buenos Aires</h1>
         </header>
 
+        <!-- Item: Parques - Tejiendo Hogares -->
         <section>
-            <h2 class="section-title"><i class="fas fa-file-signature"></i>Seguimiento a Contratos de Obra</h2>
+            <h2 class="section-title"><i class="fas fa-tree"></i>Parques - Tejiendo Hogares</h2>
+
+            <h3 class="subsection-title">Resumen general</h3>
+            <div class="grid-container">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-leaf"></i></div>
+                    <div class="value">2</div>
+                    <div class="label">Parques intervenidos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-ruler-combined"></i></div>
+                    <div class="value">2.433</div>
+                    <div class="label">Área total intervenida (m²)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-users"></i></div>
+                    <div class="value">1.532</div>
+                    <div class="label">Niños SISBENizados</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Área total por tipo de intervención
+                </h3>
+                <div class="summary-table-container">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Tipo de intervención</th>
+                                <th>Área intervenida (m²)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Transformación Total</td>
+                                <td>2.433</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle por parque</h3>
+                <div class="summary-table-container">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Comuna</th>
+                                <th>Dirección</th>
+                                <th>Ubicación parque</th>
+                                <th>Actividad</th>
+                                <th>Tipo de intervención</th>
+                                <th>Niños SISBENizados</th>
+                                <th>Área de intervención (m²)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>09 - Buenos Aires</td>
+                                <td>Calle 33 con Carrera 42</td>
+                                <td>Parque Recreativo – Policarpa Salavarrieta</td>
+                                <td>Parques Mejorados</td>
+                                <td>Transformación Total</td>
+                                <td>811</td>
+                                <td>1.151</td>
+                            </tr>
+                            <tr>
+                                <td>09 - Buenos Aires</td>
+                                <td>Calle 45D con Carrera 14C</td>
+                                <td>Parque Recreativo Los Cerros Etapa 2</td>
+                                <td>Parques Mejorados</td>
+                                <td>Transformación Total</td>
+                                <td>721</td>
+                                <td>1.282</td>
+                            </tr>
+                            <tr style="font-weight: bold; background-color: var(--color-gris-claro);">
+                                <td colspan="5">Total</td>
+                                <td>1.532</td>
+                                <td>2.433</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Item: Seguimiento a contratos de obra -->
+        <section>
+            <h2 class="section-title"><i class="fas fa-file-signature"></i>Seguimiento a contratos de obra</h2>
             <div class="summary-table-container">
                 <table class="summary-table">
                     <thead>
                         <tr>
                             <th>Actividad</th>
-                            <th>Cantidad Acumulada</th>
-                            <th>Unidad de Medida</th>
+                            <th>Cantidad acumulada</th>
+                            <th>Unidad</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Bordillos-cunetas</td><td>38</td><td>m</td></tr>
-                        <tr><td>Diseño</td><td>235</td><td>%</td></tr>
-                        <tr><td>Huecos tapados</td><td>467</td><td>un</td></tr>
-                        <tr><td>Obra de estabilización</td><td>50</td><td>m</td></tr>
-                        <tr><td>Pasamanos y defensas instalados</td><td>48</td><td>m</td></tr>
-                        <tr><td>Vía asfalto mantenida (Fallos y Repav.)</td><td>11500</td><td>m²</td></tr>
+                        <tr>
+                            <td>Vías urbanas mantenidas</td>
+                            <td>0,16</td>
+                            <td>Km</td>
+                        </tr>
+                        <tr>
+                            <td>Vía mantenida (KM)</td>
+                            <td>0,62</td>
+                            <td>Km</td>
+                        </tr>
+                        <tr>
+                            <td>Vía asfalto mantenida (fallos y repav.)</td>
+                            <td>11.499,83</td>
+                            <td>m²</td>
+                        </tr>
+                        <tr>
+                            <td>Pasamanos y defensas instalados</td>
+                            <td>48,00</td>
+                            <td>m</td>
+                        </tr>
+                        <tr>
+                            <td>Obras de estabilización</td>
+                            <td>50,00</td>
+                            <td>m</td>
+                        </tr>
+                        <tr>
+                            <td>Huecos tapados (UND)</td>
+                            <td>564,00</td>
+                            <td>un</td>
+                        </tr>
+                        <tr>
+                            <td>Diseño</td>
+                            <td>90,00</td>
+                            <td>%</td>
+                        </tr>
+                        <tr>
+                            <td>Bordillos–cunetas</td>
+                            <td>38,30</td>
+                            <td>m</td>
+                        </tr>
+                        <tr>
+                            <td>Andenes mantenidos</td>
+                            <td>99,17</td>
+                            <td>m</td>
+                        </tr>
+                        <tr>
+                            <td>Andenes construidos y mejorados</td>
+                            <td>54,56</td>
+                            <td>m</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </section>
 
+        <!-- Item: Seguimiento Malla Vial 2024 - 2027 -->
         <section>
-            <h2 class="section-title"><i class="fas fa-road"></i>Ejecución de Baches</h2>
-            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
-                <div class="stat-card">
-                    <div class="icon"><i class="fas fa-tools"></i></div>
-                    <div class="value">460</div>
-                    <div class="label">Total de baches ejecutados</div>
-                </div>
-                <div class="stat-card">
-                    <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
-                    <div class="value">$1.496.833.317</div>
-                    <div class="label">Costo total ejecutado</div>
-                </div>
-            </div>
-             <div class="chart-container">
-                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle por Barrio</h3>
-                 <div class="summary-table-container">
+            <h2 class="section-title"><i class="fas fa-road"></i>Seguimiento Malla Vial 2024 - 2027</h2>
+
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">No. baches ejecutados por Comuna</h3>
+                <div class="summary-table-container">
                     <table class="summary-table">
-                         <thead>
+                        <thead>
                             <tr>
-                                <th>Barrio</th>
-                                <th>No. Baches</th>
-                                <th>Costo</th>
+                                <th>Comuna</th>
+                                <th>No. baches</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>Loreto</td><td>87</td><td>$340.663.707</td></tr>
-                            <tr><td>El Salvador</td><td>62</td><td>$127.615.694</td></tr>
-                            <tr><td>Gerona</td><td>44</td><td>$367.322.517</td></tr>
-                            <tr><td>Miraflores</td><td>42</td><td>$86.617.719</td></tr>
-                            <tr><td>La Milagrosa</td><td>33</td><td>$78.956.718</td></tr>
-                            <tr><td>Alejandro Echavarría</td><td>30</td><td>$51.866.302</td></tr>
-                            <tr><td>Buenos Aires</td><td>30</td><td>$55.791.217</td></tr>
-                            <tr><td>Los Cerros El Vergel</td><td>29</td><td>$86.510.451</td></tr>
-                            <tr><td>Barrio Caicedo</td><td>21</td><td>$76.612.391</td></tr>
-                            <tr><td>Barrios de Jesús</td><td>21</td><td>$34.868.338</td></tr>
-                            <tr><td>Bomboná No.2</td><td>19</td><td>$72.771.539</td></tr>
-                            <tr><td>Asomadera No.2</td><td>16</td><td>$48.347.153</td></tr>
-                            <tr><td>Juan Pablo II</td><td>8</td><td>$15.191.515</td></tr>
-                            <tr><td>Asomadera No.1</td><td>6</td><td>$12.464.315</td></tr>
-                            <tr><td>Cataluña</td><td>6</td><td>$19.481.093</td></tr>
-                            <tr><td>Asomadera No.3</td><td>3</td><td>$7.486.405</td></tr>
-                            <tr><td>Ocho de Marzo</td><td>3</td><td>$4.236.181</td></tr>
+                            <tr>
+                                <td>09 – Buenos Aires</td>
+                                <td>499</td>
+                            </tr>
+                            <tr style="font-weight: bold; background-color: var(--color-gris-claro);">
+                                <td>Total</td>
+                                <td>499</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+
             <div class="chart-container">
-                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle por Contrato</h3>
-                 <div class="summary-table-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">No. baches ejecutados por Barrio</h3>
+                <div class="summary-table-container">
                     <table class="summary-table">
-                         <thead>
+                        <thead>
                             <tr>
-                                <th>Contrato</th>
-                                <th>No. Baches</th>
-                                <th>Costo</th>
+                                <th>Barrio</th>
+                                <th>No. baches</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>4600102144 - Malla Vial (2024 - 2025)</td><td>422</td><td>$1.374.824.550</td></tr>
-                            <tr><td>4600105052 - Malla Vial 2025</td><td>21</td><td>$45.798.223</td></tr>
-                            <tr><td>4600098664 - Malla Vial (2023 - 2024)</td><td>8</td><td>$18.809.225</td></tr>
-                            <tr><td>4600103229 - Suministro de Mezcla (2024 - 2025)</td><td>7</td><td>$56.857.249</td></tr>
-                            <tr><td>4600098513 - Suministro de Mezcla (2023 - 2024)</td><td>2</td><td>$944.071</td></tr>
+                            <tr>
+                                <td>Alejandro Echavarría</td>
+                                <td>36</td>
+                            </tr>
+                            <tr>
+                                <td>Asomadera No. 1</td>
+                                <td>9</td>
+                            </tr>
+                            <tr>
+                                <td>Asomadera No. 2</td>
+                                <td>12</td>
+                            </tr>
+                            <tr>
+                                <td>Asomadera No. 3</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>Barrio Caicedo</td>
+                                <td>22</td>
+                            </tr>
+                            <tr>
+                                <td>Barrios de Jesús</td>
+                                <td>24</td>
+                            </tr>
+                            <tr>
+                                <td>Bomboná No. 2</td>
+                                <td>23</td>
+                            </tr>
+                            <tr>
+                                <td>Buenos Aires</td>
+                                <td>40</td>
+                            </tr>
+                            <tr>
+                                <td>Cataluña</td>
+                                <td>10</td>
+                            </tr>
+                            <tr>
+                                <td>El Salvador</td>
+                                <td>56</td>
+                            </tr>
+                            <tr>
+                                <td>Gerona</td>
+                                <td>51</td>
+                            </tr>
+                            <tr>
+                                <td>Juan Pablo II</td>
+                                <td>8</td>
+                            </tr>
+                            <tr>
+                                <td>La Milagrosa</td>
+                                <td>35</td>
+                            </tr>
+                            <tr>
+                                <td>Loreto</td>
+                                <td>87</td>
+                            </tr>
+                            <tr>
+                                <td>Los Cerros El Vergel</td>
+                                <td>34</td>
+                            </tr>
+                            <tr>
+                                <td>Miraflores</td>
+                                <td>46</td>
+                            </tr>
+                            <tr>
+                                <td>Ocho de Marzo</td>
+                                <td>3</td>
+                            </tr>
+                            <tr style="font-weight: bold; background-color: var(--color-gris-claro);">
+                                <td>Total</td>
+                                <td>499</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Resumen general ejecución de baches por
+                    contrato</h3>
+                <div class="summary-table-container">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Contrato</th>
+                                <th>Valor del contrato</th>
+                                <th>Valor facturado</th>
+                                <th>No. baches</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>4600098513 – Suministro de Mezcla (2023–2024)</td>
+                                <td>$3.788.145.543</td>
+                                <td>$3.787.418.977</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>4600098664 – Malla Vial (2023–2024)</td>
+                                <td>$65.026.971.827</td>
+                                <td>$62.373.100.140</td>
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td>4600102144 – Malla Vial (2024–2025)</td>
+                                <td>$78.871.348.384</td>
+                                <td>$77.390.537.549</td>
+                                <td>392</td>
+                            </tr>
+                            <tr>
+                                <td>4600103229 – Suministro de Mezcla (2024–2025)</td>
+                                <td>$1.097.984.008</td>
+                                <td>$748.020.585</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>4600105052 – Malla Vial 2025</td>
+                                <td>$39.403.924.837</td>
+                                <td>$13.613.585.390</td>
+                                <td>96</td>
+                            </tr>
+                            <tr style="font-weight: bold; background-color: var(--color-gris-claro);">
+                                <td>Total</td>
+                                <td>$188.188.374.599</td>
+                                <td>$157.912.662.641</td>
+                                <td>499</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </section>
 
+        <!-- Item: Informe Paraderos -->
         <section>
-            <h2 class="section-title"><i class="fas fa-hard-hat"></i>Intervenciones Directas</h2>
-             <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+            <h2 class="section-title"><i class="fas fa-bus"></i>Informe Paraderos</h2>
+            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
                 <div class="stat-card">
-                    <div class="value">65</div>
-                    <div class="label">Total de solicitudes (2024-2025)</div>
+                    <div class="icon"><i class="fas fa-list-ol"></i></div>
+                    <div class="value">353</div>
+                    <div class="label">Cantidad total</div>
                 </div>
                 <div class="stat-card">
-                    <div class="value">$253.738.912</div>
-                    <div class="label">Costo total de obra</div>
-                </div>
-            </div>
-            <div class="intervention-section" style="margin-top: 25px;">
-                <div class="detail-list">
-                    <h3>Distribución de Solicitudes</h3>
-                    <ul>
-                        <li><span>Vigencia 2024</span> <strong>33</strong></li>
-                        <li><span>Vigencia 2025</span> <strong>32</strong></li>
-                    </ul>
-                </div>
-                <div class="detail-list">
-                    <h3>Costo por Grupo de Obra</h3>
-                    <ul>
-                        <li><span>Parques y Cerrajería</span> <strong>$128 millones</strong></li>
-                        <li><span>Pavimentos</span> <strong>$87 millones</strong></li>
-                        <li><span>Obras Civiles Menores</span> <strong>$36 millones</strong></li>
-                        <li><span>Apoyo a Otras Entidades</span> <strong>$3 millones</strong></li>
-                    </ul>
-                </div>
-                <div class="detail-list">
-                    <h3>Distribución por Indicador</h3>
-                    <ul>
-                        <li><span>Pasamanos, defensas viales y rejas</span> <strong>24</strong></li>
-                        <li><span>Mantenimiento de parques</span> <strong>9</strong></li>
-                        <li><span>Mantenimiento en vías urbanas</span> <strong>8</strong></li>
-                        <li><span>Espacios públicos mantenidos</span> <strong>7</strong></li>
-                        <li><span>Limpieza de vías</span> <strong>6</strong></li>
-                        <li><span>Andenes mantenidos</span> <strong>5</strong></li>
-                        <li><span>Andenes y cordones</span> <strong>2</strong></li>
-                        <li><span>Infraestructura vial urbana mantenida</span> <strong>2</strong></li>
-                    </ul>
+                    <div class="icon"><i class="fas fa-tools"></i></div>
+                    <div class="value">205</div>
+                    <div class="label">Cantidad intervenida</div>
                 </div>
             </div>
         </section>
-        
+
+        <!-- Item: Intervenciones Directas -->
+        <section>
+            <h2 class="section-title"><i class="fas fa-hard-hat"></i>Intervenciones Directas</h2>
+
+            <h3 class="subsection-title">Resumen general</h3>
+            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <div class="value">$360.599.359</div>
+                    <div class="label">Costo total obra</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-clipboard-list"></i></div>
+                    <div class="value">81</div>
+                    <div class="label">Solicitudes</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Cantidad de intervenciones por Comuna
+                </h3>
+                <div class="summary-table-container">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Comuna</th>
+                                <th>Intervenciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>09 - Buenos Aires</td>
+                                <td>81</td>
+                            </tr>
+                            <tr style="font-weight: bold; background-color: var(--color-gris-claro);">
+                                <td>Total</td>
+                                <td>81</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Distribución por Grupo de Obra</h3>
+                <div class="summary-table-container">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Grupo de obra</th>
+                                <th>Intervenciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Parques y Cerrajería</td>
+                                <td>47</td>
+                            </tr>
+                            <tr>
+                                <td>Obras Civiles Menores</td>
+                                <td>20</td>
+                            </tr>
+                            <tr>
+                                <td>Pavimentos</td>
+                                <td>10</td>
+                            </tr>
+                            <tr>
+                                <td>Apoyo a Otras Entidades</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>EPM</td>
+                                <td>2</td>
+                            </tr>
+                            <tr style="font-weight: bold; background-color: var(--color-gris-claro);">
+                                <td>Total</td>
+                                <td>81</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Costo total por Grupo de Obra</h3>
+                <div class="summary-table-container">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Grupo de obra</th>
+                                <th>Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Parques y Cerrajería</td>
+                                <td>$172.000.000</td>
+                            </tr>
+                            <tr>
+                                <td>Pavimentos</td>
+                                <td>$127.000.000</td>
+                            </tr>
+                            <tr>
+                                <td>Obras Civiles Menores</td>
+                                <td>$61.000.000</td>
+                            </tr>
+                            <tr>
+                                <td>Apoyo a Otras Entidades</td>
+                                <td>$1.000.000</td>
+                            </tr>
+                            <tr style="font-weight: bold; background-color: var(--color-gris-claro);">
+                                <td>Total</td>
+                                <td>$360.599.359</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Estado de Obra</h3>
+                <div class="summary-table-container">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Estado</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Terminada</td>
+                                <td>63</td>
+                            </tr>
+                            <tr>
+                                <td>Por iniciar</td>
+                                <td>9</td>
+                            </tr>
+                            <tr>
+                                <td>Traslado a contratos</td>
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td>Traslado EPM</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>En revisión</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Suspendida la obra</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Traslado a otras entidades</td>
+                                <td>1</td>
+                            </tr>
+                            <tr style="font-weight: bold; background-color: var(--color-gris-claro);">
+                                <td>Total</td>
+                                <td>81</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Distribución por indicador</h3>
+                <div class="summary-table-container">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Indicador</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Pasamanos, defensas viales y rejas</td>
+                                <td>29</td>
+                            </tr>
+                            <tr>
+                                <td>Espacios públicos mantenidos</td>
+                                <td>10</td>
+                            </tr>
+                            <tr>
+                                <td>Limpieza de vías</td>
+                                <td>9</td>
+                            </tr>
+                            <tr>
+                                <td>Mantenimiento de parques</td>
+                                <td>8</td>
+                            </tr>
+                            <tr>
+                                <td>Mantenimiento en vías urbanas</td>
+                                <td>8</td>
+                            </tr>
+                            <tr>
+                                <td>Andenes mantenidos</td>
+                                <td>7</td>
+                            </tr>
+                            <tr>
+                                <td>Infraestructura vial urbana mantenida</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>Andenes y cordones</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Mantenimiento en vías rurales</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Apoyo a otras entidades</td>
+                                <td>1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Comparativo por vigencia por grupos de
+                    obra</h3>
+                <div class="summary-table-container">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Vigencia</th>
+                                <th>Apoyo a Otras Entidades</th>
+                                <th>EPM</th>
+                                <th>Obras Civiles Menores</th>
+                                <th>Parques y Cerrajería</th>
+                                <th>Pavimentos</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024</td>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>5</td>
+                                <td>18</td>
+                                <td>7</td>
+                                <td>33</td>
+                            </tr>
+                            <tr>
+                                <td>2025</td>
+                                <td>1</td>
+                                <td>0</td>
+                                <td>15</td>
+                                <td>29</td>
+                                <td>3</td>
+                                <td>48</td>
+                            </tr>
+                            <tr style="font-weight: bold; background-color: var(--color-gris-claro);">
+                                <td>Total</td>
+                                <td>2</td>
+                                <td>2</td>
+                                <td>20</td>
+                                <td>47</td>
+                                <td>10</td>
+                                <td>81</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Item: Calamidad Publica -->
+        <section>
+            <h2 class="section-title"><i class="fas fa-exclamation-triangle"></i>Calamidad Pública</h2>
+
+            <h3 class="subsection-title">Intervenciones Directas – Secretaría de Infraestructura Física</h3>
+            <p style="font-weight: 600; color: var(--color-azul-medio);">Comuna / Corregimiento: 09 – Buenos Aires</p>
+
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Intervenciones (solo maquinaria)</h3>
+                <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                    <div class="stat-card">
+                        <div class="value">12</div>
+                        <div class="label">Total días de intervención</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">23</div>
+                        <div class="label">Cantidad de material</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">$6.915.605</div>
+                        <div class="label">Costo total de intervenciones</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Material removido</h3>
+                <div class="grid-container" style="grid-template-columns: 1fr;">
+                    <div class="stat-card">
+                        <div class="icon"><i class="fas fa-cube"></i></div>
+                        <div class="value">62</div>
+                        <div class="label">m³ de tierra removida</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Inversión por comuna</h3>
+                <div class="grid-container" style="grid-template-columns: 1fr;">
+                    <div class="stat-card">
+                        <div class="icon"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="value">$10.163.847</div>
+                        <div class="label">Costo total</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Cantidad de maquinaria asumida por la
+                    Secretaría de Infraestructura Física</h3>
+                <div class="detail-list">
+                    <ul>
+                        <li><span>Minicargador</span> <strong>3</strong></li>
+                        <li><span>Retroexcavadora</span> <strong>1</strong></li>
+                        <li><span>Volqueta sencilla</span> <strong>8</strong></li>
+                        <li
+                            style="font-weight: bold; background-color: var(--color-gris-claro); padding: 10px; margin-top: 5px;">
+                            <span>Total</span> <strong>12</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Total general de maquinaria</h3>
+                <div class="grid-container" style="grid-template-columns: 1fr;">
+                    <div class="stat-card">
+                        <div class="icon"><i class="fas fa-truck"></i></div>
+                        <div class="value">12</div>
+                        <div class="label">Total de equipos utilizados</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </div>
 
     <script>
         document.getElementById('download-pdf').addEventListener('click', function () {
             if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
                 alert('Error: No se pudieron cargar las librerías para generar el PDF.\nPor favor, verifica tu conexión a internet e inténtalo de nuevo.');
-                return; 
+                return;
             }
 
             const button = this;
             const content = document.getElementById('report-content');
-            
+
             button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
             button.disabled = true;
 
@@ -435,4 +1036,5 @@
         });
     </script>
 </body>
+
 </html>

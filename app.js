@@ -220,6 +220,45 @@ document.addEventListener('DOMContentLoaded', function () {
         return inside;
     }
 
+    // --- LÓGICA DE CORREGIMIENTOS (MENU LATERAL) ---
+    const corregimientosData = [
+        { IDENTIFICADOR: '50', NOMBRE: 'San Sebastián de Palmitas' },
+        { IDENTIFICADOR: '60', NOMBRE: 'San Cristóbal' },
+        { IDENTIFICADOR: '70', Altavista: 'Altavista', NOMBRE: 'Altavista' }, // Normalizado nombre
+        { IDENTIFICADOR: '80', NOMBRE: 'San Antonio de Prado' },
+        { IDENTIFICADOR: '90', NOMBRE: 'Santa Elena' }
+    ];
+
+    const corregimientosList = document.getElementById('corregimientos-list');
+
+    function loadCorregimientosMenu() {
+        if (!corregimientosList) return;
+
+        corregimientosData.forEach(corr => {
+            const item = document.createElement('div');
+            // Reusamos estilos de search results o creamos unos similares
+            item.className = 'p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-orange-100 transition-colors duration-200 flex items-center gap-3 border border-gray-200';
+            item.innerHTML = `
+                <div class="bg-white p-2 rounded-full shadow-sm text-orange-500">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div>
+                    <div class="font-bold text-gray-700 text-sm">${corr.NOMBRE}</div>
+                    <div class="text-xs text-gray-500">ID: ${corr.IDENTIFICADOR}</div>
+                </div>
+            `;
+            
+            item.addEventListener('click', () => {
+                showComunaInfo(corr);
+            });
+
+            corregimientosList.appendChild(item);
+        });
+    }
+
+    // Cargar el menú al iniciar
+    loadCorregimientosMenu();
+
     // --- FIN DE LA NUEVA LÓGICA ---
 
     function showComunaInfo(properties) {
