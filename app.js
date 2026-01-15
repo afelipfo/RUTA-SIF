@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const infoSidebar = document.getElementById('info-sidebar');
     const closeSidebarBtn = document.getElementById('close-sidebar-btn');
     const locateBtn = document.getElementById('locate-btn'); // NUEVO: Referencia al botón
-    
+
     let comunasData = null;
     let hoveredComunaId = null;
     let userMarker = null; // NUEVO: Variable para el marcador del usuario
@@ -33,16 +33,53 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const response = await fetch('comunas.geojson');
             comunasData = await response.json();
-            
+
             initializeMapLayers();
             setupInteractions();
-            
+            loadCorregimientosMenu(); // Cargar menú después de obtener datos
+
         } catch (error) {
             console.error("Error cargando los datos de las comunas:", error);
             console.error("No se pudo cargar el archivo comunas.geojson. Asegúrate de que el archivo exista en la misma carpeta.");
         }
     });
 
+    // --- LÓGICA DE CORREGIMIENTOS (MENU LATERAL DINÁMICO) ---
+    const corregimientosList = document.getElementById('corregimientos-list');
+
+    function loadCorregimientosMenu() {
+        if (!corregimientosList || !comunasData) return;
+
+        // Filtrar solo corregimientos (IDs >= 50) y ordenar
+        const corregimientos = comunasData.features
+            .map(f => f.properties)
+            .filter(p => parseInt(p.IDENTIFICADOR) >= 50)
+            .sort((a, b) => parseInt(a.IDENTIFICADOR) - parseInt(b.IDENTIFICADOR));
+
+        corregimientos.forEach(corr => {
+            const item = document.createElement('div');
+            item.className = 'p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-orange-100 transition-colors duration-200 flex items-center gap-3 border border-gray-200';
+
+            // Limpiar nombre si es muy largo para el menú
+            const displayName = corr.NOMBRE.replace('Corregimiento ', '').replace(/^[0-9]+ - /, '');
+
+            item.innerHTML = `
+                <div class="bg-white p-2 rounded-full shadow-sm text-orange-500">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div>
+                    <div class="font-bold text-gray-700 text-sm">${displayName}</div>
+                    <div class="text-xs text-gray-500">ID: ${corr.IDENTIFICADOR}</div>
+                </div>
+            `;
+
+            item.addEventListener('click', () => {
+                showComunaInfo(corr);
+            });
+
+            corregimientosList.appendChild(item);
+        });
+    }
     function initializeMapLayers() {
         if (!comunasData) return;
 
@@ -82,6 +119,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // --- INTERACCIONES DEL MAPA Y UI ---
+
+    // --- INTERACCIONES DEL MAPA Y UI ---
     function setupInteractions() {
         const popup = new mapboxgl.Popup({
             closeButton: false,
@@ -111,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
             hoveredComunaId = null;
             popup.remove();
         });
-        
+
         map.on('click', 'comunas-3d-fill', (e) => {
             if (e.features.length > 0) {
                 showComunaInfo(e.features[0].properties);
@@ -129,11 +168,11 @@ document.addEventListener('DOMContentLoaded', function () {
         closeSidebarBtn.addEventListener('click', () => {
             infoSidebar.classList.add('-translate-x-full');
         });
-        
+
         // NUEVO: Event listener para el botón de geolocalización
         locateBtn.addEventListener('click', handleLocate);
     }
-    
+
     function handleSearch(e) {
         const query = e.target.value.toLowerCase();
         if (!comunasData || query.length < 1) {
@@ -141,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        const filtered = comunasData.features.filter(feature => 
+        const filtered = comunasData.features.filter(feature =>
             feature.properties.NOMBRE.toLowerCase().includes(query)
         );
 
@@ -150,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function () {
             filtered.forEach(feature => {
                 const item = document.createElement('div');
                 // CORRECCIÓN: Usar la clase .result-item para aplicar estilos de styles.css
-                item.className = 'result-item'; 
+                item.className = 'result-item';
                 item.textContent = feature.properties.NOMBRE;
                 item.addEventListener('click', () => {
                     showComunaInfo(feature.properties);
@@ -164,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
             searchResultsContainer.classList.add('hidden');
         }
     }
-    
+
     // --- NUEVA LÓGICA DE GEOLOCALIZACIÓN ---
     function handleLocate() {
         if (!navigator.geolocation) {
@@ -185,9 +224,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         .setLngLat(userPoint)
                         .addTo(map);
                 }
-                
+
                 // Encontrar la comuna que contiene la ubicación del usuario
-                const foundComuna = comunasData.features.find(feature => 
+                const foundComuna = comunasData.features.find(feature =>
                     pointInPolygon(userPoint, feature.geometry.coordinates[0])
                 );
 
@@ -204,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         );
     }
-    
+
     // Función para detectar si un punto está dentro de un polígono (algoritmo ray-casting)
     function pointInPolygon(point, polygon) {
         let x = point[0], y = point[1];
@@ -220,62 +259,23 @@ document.addEventListener('DOMContentLoaded', function () {
         return inside;
     }
 
-    // --- LÓGICA DE CORREGIMIENTOS (MENU LATERAL) ---
-    const corregimientosData = [
-        { IDENTIFICADOR: '50', NOMBRE: 'San Sebastián de Palmitas' },
-        { IDENTIFICADOR: '60', NOMBRE: 'San Cristóbal' },
-        { IDENTIFICADOR: '70', Altavista: 'Altavista', NOMBRE: 'Altavista' }, // Normalizado nombre
-        { IDENTIFICADOR: '80', NOMBRE: 'San Antonio de Prado' },
-        { IDENTIFICADOR: '90', NOMBRE: 'Santa Elena' }
-    ];
-
-    const corregimientosList = document.getElementById('corregimientos-list');
-
-    function loadCorregimientosMenu() {
-        if (!corregimientosList) return;
-
-        corregimientosData.forEach(corr => {
-            const item = document.createElement('div');
-            // Reusamos estilos de search results o creamos unos similares
-            item.className = 'p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-orange-100 transition-colors duration-200 flex items-center gap-3 border border-gray-200';
-            item.innerHTML = `
-                <div class="bg-white p-2 rounded-full shadow-sm text-orange-500">
-                    <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <div>
-                    <div class="font-bold text-gray-700 text-sm">${corr.NOMBRE}</div>
-                    <div class="text-xs text-gray-500">ID: ${corr.IDENTIFICADOR}</div>
-                </div>
-            `;
-            
-            item.addEventListener('click', () => {
-                showComunaInfo(corr);
-            });
-
-            corregimientosList.appendChild(item);
-        });
-    }
-
-    // Cargar el menú al iniciar
-    loadCorregimientosMenu();
-
     // --- FIN DE LA NUEVA LÓGICA ---
 
     function showComunaInfo(properties) {
         const feature = comunasData.features.find(f => f.properties.IDENTIFICADOR === properties.IDENTIFICADOR);
         if (feature) {
-             const coordinates = feature.geometry.coordinates[0];
-             const bounds = coordinates.reduce((bounds, coord) => {
-                 return bounds.extend(coord);
-             }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+            const coordinates = feature.geometry.coordinates[0];
+            const bounds = coordinates.reduce((bounds, coord) => {
+                return bounds.extend(coord);
+            }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
 
-             map.fitBounds(bounds, {
-                 padding: { top: 100, bottom: 100, left: infoSidebar.offsetWidth + 50, right: 50 },
-                 pitch: 65,
-                 duration: 2000
-             });
+            map.fitBounds(bounds, {
+                padding: { top: 100, bottom: 100, left: infoSidebar.offsetWidth + 50, right: 50 },
+                pitch: 65,
+                duration: 2000
+            });
         }
-        
+
         reportContent.innerHTML = `
             <div class="p-4">
                 <h2 class="text-3xl font-extrabold text-gray-800 border-b-4 border-orange-500 pb-3 mb-6">${properties.NOMBRE}</h2>
@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </button>
             </div>
         `;
-        
+
         document.getElementById('generate-pdf-btn').addEventListener('click', () => {
             generatePDFFromHTMLFile(properties);
         });
@@ -315,10 +315,10 @@ document.addEventListener('DOMContentLoaded', function () {
             tempContainer.style.position = 'absolute';
             tempContainer.style.left = '-9999px';
             tempContainer.style.top = '0';
-            tempContainer.style.width = '800px'; 
+            tempContainer.style.width = '800px';
             tempContainer.innerHTML = htmlContent;
             document.body.appendChild(tempContainer);
-            
+
             pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
 
             await new Promise(resolve => setTimeout(resolve, 500));
@@ -335,14 +335,14 @@ document.addEventListener('DOMContentLoaded', function () {
             const imgData = canvas.toDataURL('image/png');
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
-            
+
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = pdf.internal.pageSize.getHeight();
-            
+
             const canvasWidth = canvas.width;
             const canvasHeight = canvas.height;
             const ratio = canvasWidth / canvasHeight;
-            
+
             const imgHeightOnPDF = pdfWidth / ratio;
             let heightLeft = imgHeightOnPDF;
             let position = 0;
@@ -366,7 +366,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (tempContainer && document.body.contains(tempContainer)) {
                 document.body.removeChild(tempContainer);
             }
-            
+
             pdfButton.innerHTML = '<i class="fas fa-file-pdf"></i> Generar Reporte PDF';
             pdfButton.disabled = false;
         }
